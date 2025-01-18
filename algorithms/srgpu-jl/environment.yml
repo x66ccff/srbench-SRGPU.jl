@@ -1,6 +1,7 @@
 channels:
-    - conda-forge
+  - conda-forge
+
 dependencies:
-    - cmake
-    - ncdu 
-    - julia
+  - cmake::conda-forge
+  - ncdu::conda-forge
+  - julia::conda-forge
