@@ -21,4 +21,4 @@ git clone https://github.com/x66ccff/SymbolicRegressionGPU.jl
 cd SymbolicRegressionGPU.jl
 
 # install and build package
-julia --project=. -e 'using Pkg; Pkg.develop(path="."); Pkg.build()'
+julia -e 'using Pkg; Pkg.develop(path="."); Pkg.build()'
