@@ -9,4 +9,4 @@ dependencies:
   - curl
   # - julia>=1.10    # 指定 julia 版本
   - scikit-learn=1.4  # 指定 scikit-learn 版本
-  - cuda-toolkit  # 指定 cuda-toolkit 版本
+  # - cuda-toolkit  # 指定 cuda-toolkit 版本
