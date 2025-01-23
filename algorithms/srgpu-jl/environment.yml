@@ -1,7 +1,7 @@
 name: srbench-srgpu-jl
 channels:
   - conda-forge
-  - nvidia
+  # - nvidia
 
 dependencies:
   - cmake=3.28.3  # 指定 cmake 版本
