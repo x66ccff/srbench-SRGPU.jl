@@ -126,8 +126,8 @@ y = Float32.(vec(readdlm("{self.y_path}")))
 options = SymbolicRegressionGPU.Options(;
     binary_operators={self.binary_operators},
     unary_operators={self.unary_operators},
-    population_size=100,
-    populations=15,
+    # population_size=100,
+    # populations=15,
     batching=true,
     batch_size=100,
     adaptive_parsimony_scaling=1_000.0,
@@ -135,6 +135,10 @@ options = SymbolicRegressionGPU.Options(;
     maxsize=30,
     maxdepth=20,
     turbo=true,
+    should_optimize_constants=false,
+    optimizer_iterations=4,
+    optimizer_f_calls_limit=1000,
+    optimizer_probability=0.02,
     early_stop_condition=(l, c) -> l < 1e-6 && c == 5,
     constraints = [
         sin => 9,
@@ -254,10 +258,31 @@ println("")
             self.best_complexity = oc.best_complexity
             self.best_loss = oc.best_loss
             
-            print('✨self.results✨',self.results)
-            print(f'✨ 最佳方程: {self.best_model}')
-            print(f'✨ 模型复杂度: {self.best_complexity}')
-            print(f'✨ 验证损失: {self.best_loss}')
+            from datetime import datetime
+
+            # 定义日志文件路径
+            log_file = '/home/kent/_Project/PTSjl/SRbench-GPU-prime/SRbench-GPU-prime/full_logs.txt'
+
+            # 将内容同时打印并写入文件
+            def log_print(*args, **kwargs):
+                # 获取当前时间，格式: 2025-01-29 14:30:05.123
+                current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+                
+                # 组合时间和内容
+                content = f"[{current_time}] " + " ".join(map(str, args))
+                
+                # 正常打印到控制台
+                print(content, **kwargs)
+                
+                # 将内容写入文件
+                with open(log_file, 'a', encoding='utf-8') as f:
+                    print(content, **kwargs, file=f)
+
+            # 使用示例
+            log_print('✨self.results✨', self.results)
+            log_print(f'✨ 最佳方程: {self.best_model}')
+            log_print(f'✨ 模型复杂度: {self.best_complexity}')
+            log_print(f'✨ 验证损失: {self.best_loss}')
 
         except subprocess.CalledProcessError as e:
             print("\nJulia script failed with error:")
@@ -349,11 +374,8 @@ def model(est):
     expr_evalf = expr_symplified.evalf(9)
     print(expr_evalf)
     expr = str(expr_evalf)
-
-    new_model = replace_variables(expr, est.feature_names)
-    print('替换之后：')
-    print(new_model)
-    return new_model
+    print('返回：')
+    return expr
 
 
 drmask_dir = '~/_Project/PTSjl/SRbench-GPU-prime/SRbench-GPU-prime/srbench-master/experiment/methods/PTS/dr_mask'
