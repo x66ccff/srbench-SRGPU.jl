@@ -124,7 +124,7 @@ X = Float32.(transpose(readdlm("{self.X_path}")))
 y = Float32.(vec(readdlm("{self.y_path}")))
 
 options = SymbolicRegressionGPU.Options(;
-    timeout_in_seconds=10*60,
+    timeout_in_seconds=3*60,
     binary_operators={self.binary_operators},
     unary_operators={self.unary_operators},
     # population_size=100,
@@ -140,7 +140,7 @@ options = SymbolicRegressionGPU.Options(;
     optimizer_iterations=4,
     optimizer_f_calls_limit=1000,
     optimizer_probability=0.02,
-    early_stop_condition=(l, c) -> l < 1e-6 && c == 5,
+    early_stop_condition=(l, c) -> (l < 1e-6 && c <= 5) || (l < 1e-10 && c <= 10) || (l < 1e-13 && c <= 15),
     constraints = [
         sin => 9,
         cos => 9,
