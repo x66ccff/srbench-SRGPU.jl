@@ -1,0 +1,12 @@
+name: srbench-srgpu-jl
+channels:
+  - conda-forge
+  # - nvidia
+
+dependencies:
+  - cmake=3.28.3  # 指定 cmake 版本
+  - ncdu      # 指定 ncdu 版本
+  - curl
+  # - julia>=1.10    # 指定 julia 版本
+  - scikit-learn=1.4  # 指定 scikit-learn 版本
+  # - cuda-toolkit  # 指定 cuda-toolkit 版本
