@@ -124,6 +124,7 @@ X = Float32.(transpose(readdlm("{self.X_path}")))
 y = Float32.(vec(readdlm("{self.y_path}")))
 
 options = SymbolicRegressionGPU.Options(;
+    timeout_in_seconds=10*60,
     binary_operators={self.binary_operators},
     unary_operators={self.unary_operators},
     # population_size=100,
@@ -171,7 +172,8 @@ options = SymbolicRegressionGPU.Options(;
 
 hall_of_fame = equation_search(X, y; 
     options=options, 
-    parallelism=:multithreading
+    parallelism=:multithreading,
+    niterations=10000,
 )
 
 dominating = calculate_pareto_frontier(hall_of_fame)
@@ -261,7 +263,7 @@ println("")
             from datetime import datetime
 
             # 定义日志文件路径
-            log_file = '/home/kent/_Project/PTSjl/SRbench-GPU-prime/SRbench-GPU-prime/full_logs.txt'
+            log_file = '/home/kent/_Project/PTSjl/SRbench-GPU-prime/SRbench-GPU-prime/full_logs_10min.txt'
 
             # 将内容同时打印并写入文件
             def log_print(*args, **kwargs):
